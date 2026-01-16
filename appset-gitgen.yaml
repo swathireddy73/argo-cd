@@ -6,8 +6,8 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: 'https://github.com/gititc778/gitops'
-        revision: main          # ✅ updated to your branch
+        repoURL: https://github.com/gititc778/gitops
+        revision: master        # <-- change here
         directories:
           - path: sampleapp
   template:
@@ -16,13 +16,13 @@ spec:
     spec:
       project: dev-project
       source:
-        repoURL: 'https://github.com/gititc778/gitops'
-        targetRevision: main    # ✅ updated to your branch
+        repoURL: https://github.com/gititc778/gitops
+        targetRevision: master   # <-- change here
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
         namespace: dev
       syncPolicy:
         automated:
-          selfHeal: true
           prune: true
+          selfHeal: true
