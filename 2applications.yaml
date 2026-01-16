@@ -4,17 +4,18 @@ metadata:
   name: sampleapp-dev
   namespace: argocd
 spec:
-  project: default
+  project: dev-project           # use your AppProject
   source:
     repoURL: https://github.com/gititc778/gitops
     targetRevision: master
-    path: sampleapp     
+    path: sampleapp
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
   syncPolicy:
     automated:
       selfHeal: true
+      prune: true
 
 ---
 
@@ -24,14 +25,15 @@ metadata:
   name: sampleapp-stage
   namespace: argocd
 spec:
-  project: default
+  project: dev-project           # use your AppProject
   source:
     repoURL: https://github.com/gititc778/gitops
     targetRevision: master
-    path: sampleapp     
+    path: sampleapp
   destination:
-    server: https://192.168.111.132:8443
-    namespace: dev
+    server: https://kubernetes.default.svc
+    namespace: stage
   syncPolicy:
     automated:
       selfHeal: true
+      prune: true
