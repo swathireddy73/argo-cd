@@ -1,17 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sampleapp-dev
+  name: sampleapp-single
   namespace: argocd
 spec:
-  project: default
+  project: dev-project
   source:
     repoURL: https://github.com/gititc778/gitops
     targetRevision: master
-    path: sampleapp     
+    path: sampleapp
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
   syncPolicy:
     automated:
       selfHeal: true
+      prune: true
