@@ -6,25 +6,21 @@ metadata:
 spec:
   description: Project for dev and stage environments on the default cluster
 
-  # Allowed Git repos
   sourceRepos:
     - https://github.com/gititc778/gitops
 
-  # Allowed destinations (default cluster)
   destinations:
     - server: https://kubernetes.default.svc
       namespace: dev
     - server: https://kubernetes.default.svc
       namespace: stage
 
-  # Allowed cluster-level resources
   clusterResourceWhitelist:
     - group: ""
       kind: Namespace
     - group: ""
       kind: PersistentVolume
 
-  # Allowed namespace-level resources
   namespaceResourceWhitelist:
     - group: "*"
       kind: "*"
