@@ -4,26 +4,27 @@ metadata:
   name: dev-project
   namespace: argocd
 spec:
-  description: Only allow deploys to dev namespace on one cluster
+  description: Project for dev and stage environments on the default cluster
 
-  # Which Git repos apps are allowed to use
+  # Allowed Git repos
   sourceRepos:
     - https://github.com/gititc778/gitops
 
-  # Where apps are allowed to deploy
+  # Allowed destinations (default cluster)
   destinations:
-    - server: https://192.168.111.132:8443
+    - server: https://kubernetes.default.svc
       namespace: dev
+    - server: https://kubernetes.default.svc
+      namespace: stage
 
-  # What cluster-level resources are allowed. This will allow the app to create a namespace and pv. Both are cluster level
-  # resources
+  # Allowed cluster-level resources
   clusterResourceWhitelist:
     - group: ""
       kind: Namespace
     - group: ""
       kind: PersistentVolume
 
-  # What namespace-level resources are allowed
+  # Allowed namespace-level resources
   namespaceResourceWhitelist:
     - group: "*"
       kind: "*"
