@@ -1,33 +1,33 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: sampleapp-appset
+  name: sampleapp-matrix
   namespace: argocd
 spec:
   generators:
     - matrix:
         generators:
-          # List clusters
           - list:
               elements:
                 - cluster: https://kubernetes.default.svc
-                  appName: sampleapp-dev
-                - cluster: https://192.168.111.132:8443
-                  appName: sampleapp-stage
-          # List namespaces
+                  namespace: dev
           - list:
               elements:
-                - namespace: dev
-                - namespace: preprod
+                - name: sampleapp-dev
+                - name: sampleapp-stage
   template:
     metadata:
-      name: "{{appName}}-{{namespace}}"  # Include namespace in app name
+      name: '{{name}}'
     spec:
-      project: default
+      project: dev-project
       source:
         repoURL: https://github.com/gititc778/gitops
         targetRevision: master
         path: sampleapp
       destination:
-        server: "{{cluster}}"
-        namespace: "{{namespace}}"
+        server: '{{cluster}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
