@@ -7,9 +7,9 @@ spec:
   generators:
     - list:
         elements:
-          - name: sampleapp-dev
+          - name: sampleapp-list-dev
             namespace: dev
-          - name: sampleapp-stage
+          - name: sampleapp-list-stage
             namespace: stage
   template:
     metadata:
@@ -25,5 +25,5 @@ spec:
         namespace: '{{namespace}}'
       syncPolicy:
         automated:
-          selfHeal: true
           prune: true
+          selfHeal: true
