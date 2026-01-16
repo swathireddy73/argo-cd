@@ -1,32 +1,29 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: sampleapp-appset
+  name: sampleapp-listgen
   namespace: argocd
 spec:
   generators:
     - list:
         elements:
-          - cluster: https://kubernetes.default.svc 
-            appName: sampleapp-dev
-          - cluster: https://192.168.111.132:8443 
-            appName: sampleapp-stage
+          - name: sampleapp-dev
+            namespace: dev
+          - name: sampleapp-stage
+            namespace: stage
   template:
     metadata:
-      name: "{{appName}}" 
+      name: '{{name}}'
     spec:
-      project: default
+      project: dev-project
       source:
         repoURL: https://github.com/gititc778/gitops
         targetRevision: master
         path: sampleapp
       destination:
-        server: "{{cluster}}"
-        namespace: dev
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
       syncPolicy:
         automated:
           selfHeal: true
           prune: true
-      syncOptions:
-        - CreateNamespace=true
-        - ApplyOutOfSyncOnly=true
