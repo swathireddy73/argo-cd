@@ -6,8 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 
-https://github.com/swathireddy73/argo-cd.git
+    repoURL: https://github.com/gititc778/gitops
     targetRevision: master
     path: sampleapp     
   destination:
