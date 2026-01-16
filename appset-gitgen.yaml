@@ -7,6 +7,7 @@ spec:
   generators:
     - git:
         repoURL: 'https://github.com/gititc778/gitops'
+        revision: main          # ✅ updated to your branch
         directories:
           - path: sampleapp
   template:
@@ -16,7 +17,7 @@ spec:
       project: dev-project
       source:
         repoURL: 'https://github.com/gititc778/gitops'
-        targetRevision: master
+        targetRevision: main    # ✅ updated to your branch
         path: '{{path}}'
       destination:
         server: https://kubernetes.default.svc
