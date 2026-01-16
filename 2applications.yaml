@@ -1,37 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: sampleapp-dev
+  name: sampleapp-gitgen
   namespace: argocd
 spec:
-  project: default
-  source:
-    repoURL: https://github.com/gititc778/gitops
-    targetRevision: master
-    path: sampleapp     
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: dev
-  syncPolicy:
-    automated:
-      selfHeal: true
-
----
-
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: sampleapp-stage
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/gititc778/gitops
-    targetRevision: master
-    path: sampleapp     
-  destination:
-    server: https://192.168.111.132:8443
-    namespace: dev
-  syncPolicy:
-    automated:
-      selfHeal: true
+  generators:
+    - list:
+        elements:
+          - cluster: https://kubernetes.default.svc
+            namespace: dev
+            name: sampleapp-dev
+          - cluster: https://192.168.111.132:8443
+            namespace: dev
+            name: sampleapp-stage
+  template:
+    metadata:
+      name: '{{name}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/gititc778/gitops
+        targetRevision: master
+        path: sampleapp
+      destination:
+        server: '{{cluster}}'
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          selfHeal: true
