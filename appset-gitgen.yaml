@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/gititc778/gitops
-        revision: master          # MUST match repo branch
+        revision: master
         directories:
           - path: sampleapp
   template:
@@ -18,3 +18,11 @@ spec:
       source:
         repoURL: https://github.com/gititc778/gitops
         targetRevision: master
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: dev
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
