@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/gititc778/gitops
-        revision: main   # 👈 use main (not master)
+        revision: master          # 👈 must match your actual Git branch
         directories:
           - path: sampleapp
 
@@ -19,7 +19,7 @@ spec:
 
       source:
         repoURL: https://github.com/gititc778/gitops
-        targetRevision: main
+        targetRevision: master   # 👈 must match your branch
         path: '{{path}}'
 
       destination:
@@ -32,13 +32,13 @@ spec:
           selfHeal: true
 
       ignoreDifferences:
-        # Ignore replica drift (HPA, manual scaling)
+        # Ignore replica drift (manual scaling or HPA)
         - group: apps
           kind: Deployment
           jsonPointers:
             - /spec/replicas
 
-        # Ignore status field (always managed by Kubernetes)
+        # Ignore status fields (managed by Kubernetes)
         - group: "*"
           kind: "*"
           jsonPointers:
