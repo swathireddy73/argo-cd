@@ -7,22 +7,39 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/gititc778/gitops
-        revision: master
+        revision: main   # 👈 use main (not master)
         directories:
           - path: sampleapp
+
   template:
     metadata:
       name: '{{path.basename}}'
     spec:
       project: dev-project
+
       source:
         repoURL: https://github.com/gititc778/gitops
-        targetRevision: master
+        targetRevision: main
         path: '{{path}}'
+
       destination:
         server: https://kubernetes.default.svc
         namespace: dev
+
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+
+      ignoreDifferences:
+        # Ignore replica drift (HPA, manual scaling)
+        - group: apps
+          kind: Deployment
+          jsonPointers:
+            - /spec/replicas
+
+        # Ignore status field (always managed by Kubernetes)
+        - group: "*"
+          kind: "*"
+          jsonPointers:
+            - /status
